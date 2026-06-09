@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chihuahua or Muffin — Built From Scratch</title>
+<meta name="description" content="An original from-scratch build of the famous chihuahua-vs-muffin image classifier: a deep-learning model that learns to tell near-identical images apart — the textbook test of fine-grained vision." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --accent:#b45309; --accent-soft:#fbf0e2; --ink:#241a0f; --muted:#6a5945;
+    --line:#ecdfc9; --bg:#fdfaf4; --card:#ffffff;
+    --serif:'Fraunces',Georgia,serif; --sans:'Inter',system-ui,sans-serif; --mono:'JetBrains Mono',monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:860px;margin:0 auto;padding:0 28px}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  code{font-family:var(--mono);font-size:.86em;background:var(--accent-soft);padding:.1em .4em;border-radius:4px;color:#92400e}
+  h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.15;letter-spacing:-.01em}
+  header.hero{padding:88px 0 56px;border-bottom:1px solid var(--line)}
+  .eyebrow{font-family:var(--mono);font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin:0 0 22px}
+  h1{font-size:clamp(2.6rem,6vw,4.1rem);margin:0 0 18px}
+  .lede{font-size:1.22rem;color:var(--muted);max-width:62ch;margin:0 0 28px}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;font-size:.82rem}
+  .chip{font-family:var(--mono);font-size:.72rem;letter-spacing:.04em;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--muted);background:var(--card)}
+  section{padding:54px 0;border-bottom:1px solid var(--line)}
+  .kicker{font-family:var(--mono);font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+  h2{font-size:clamp(1.7rem,3.4vw,2.3rem);margin:0 0 20px}
+  h3{font-size:1.2rem;margin:0 0 6px}
+  p{margin:0 0 18px;max-width:68ch}
+  .muted{color:var(--muted)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:8px}
+  .tool{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .tool .t{font-family:var(--mono);font-size:.78rem;color:var(--accent);letter-spacing:.04em;margin-bottom:8px}
+  .tool h3{font-size:1.05rem;font-family:var(--sans);font-weight:600;margin-bottom:6px}
+  .tool p{font-size:.92rem;color:var(--muted);margin:0}
+  ol.flow{counter-reset:s;list-style:none;padding:0;margin:24px 0 0}
+  ol.flow li{position:relative;padding:18px 0 18px 56px;border-top:1px solid var(--line)}
+  ol.flow li:before{counter-increment:s;content:counter(s,decimal-leading-zero);position:absolute;left:0;top:18px;font-family:var(--mono);font-size:.8rem;color:var(--accent);border:1px solid var(--line);border-radius:8px;width:38px;height:38px;display:grid;place-items:center;background:var(--card)}
+  ol.flow li h3{font-family:var(--sans);font-size:1.02rem;font-weight:600;margin:0 0 4px}
+  ol.flow li p{margin:0;font-size:.93rem;color:var(--muted)}
+  .callout{background:var(--accent-soft);border:1px solid #ecd3ab;border-radius:14px;padding:24px 26px;margin-top:8px}
+  .callout p:last-child{margin:0}
+  ul.learn{list-style:none;padding:0;margin:8px 0 0}
+  ul.learn li{padding:14px 0 14px 30px;border-top:1px solid var(--line);position:relative;color:var(--muted);max-width:68ch}
+  ul.learn li:before{content:"→";position:absolute;left:0;color:var(--accent);font-family:var(--mono)}
+  ul.learn li b{color:var(--ink);font-weight:600}
+  .price{display:flex;align-items:baseline;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 26px;margin-top:8px}
+  .price .n{font-family:var(--serif);font-size:2.6rem;color:var(--accent);line-height:1}
+  .price .l{color:var(--muted);font-size:.95rem}
+  footer{padding:48px 0 80px}
+  .credit{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px}
+  .credit .k{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+  footer .fine{font-size:.8rem;color:var(--muted);margin-top:22px;text-align:center}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">From-Scratch Build · Computer Vision</p>
+    <h1>Chihuahua or Muffin? 🐶🧁</h1>
+    <p class="lede">It started as a joke meme — a grid where tiny dogs and blueberry muffins are genuinely hard to tell apart — and became the perfect teaching problem for deep vision. I rebuilt the classifier from scratch because if a model can reliably separate a chihuahua from a muffin, it has learned something real about texture, shape and context, not just colour.</p>
+    <div class="meta">
+      <span class="chip">Python</span><span class="chip">PyTorch</span><span class="chip">CNN</span>
+      <span class="chip">Transfer learning</span><span class="chip">Image classification</span><span class="chip">Data augmentation</span>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <p class="kicker">What it is</p>
+    <h2>The meme that teaches you vision</h2>
+    <p>Two classes, one binary question, endlessly entertaining wrong answers. The chihuahua-vs-muffin problem is funny because the two really do look alike at a glance — same blobby brown shapes, same dark dots where eyes and blueberries sit. That visual collision is exactly what makes it a serious benchmark: easy features fail, so the model is forced to learn discriminative ones.</p>
+    <p>This build trains a convolutional network to make the call. Along the way it touches every fundamental of practical image classification — building a clean dataset, augmenting it, fine-tuning a pretrained backbone, and being honest about where the model still gets fooled.</p>
+    <div class="price">
+      <div class="n">2</div>
+      <div class="l">classes — and that's the point: with the hardest possible pair, accuracy actually measures understanding, not luck.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="kicker">The stack</p>
+    <h2>From image folder to confident call</h2>
+    <p class="muted">The canonical deep-vision pipeline, end to end.</p>
+    <div class="grid">
+      <div class="tool"><div class="t">data</div><h3>Labelled dataset</h3><p>A balanced set of chihuahua and muffin images — the raw material, and where most of the real work hides.</p></div>
+      <div class="tool"><div class="t">robustness</div><h3>Augmentation</h3><p>Flip, crop, rotate and recolour to teach the model the class, not the photo — and to stretch a small dataset.</p></div>
+      <div class="tool"><div class="t">backbone</div><h3>Pretrained CNN</h3><p>Start from a network that already knows edges and textures, then fine-tune it for this one hard distinction.</p></div>
+      <div class="tool"><div class="t">training</div><h3>Loss &amp; optimiser</h3><p>Cross-entropy and gradient descent nudge the weights until muffins and chihuahuas pull apart.</p></div>
+      <div class="tool"><div class="t">evaluation</div><h3>Confusion matrix</h3><p>Not just accuracy — <i>which</i> way it errs. The muffins it calls dogs are the interesting failures.</p></div>
+      <div class="tool"><div class="t">insight</div><h3>Saliency maps</h3><p>Look at where the model is looking, to check it learned the dog and not the background.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="kicker">Architecture</p>
+    <h2>How the classifier is trained</h2>
+    <p>From a pile of images to a model you can trust, the path is the same every time:</p>
+    <ol class="flow">
+      <li><h3>Assemble</h3><p>Collect and label images, then split into training, validation and test sets.</p></li>
+      <li><h3>Augment</h3><p>Apply random transforms so the model sees endless variations of each example.</p></li>
+      <li><h3>Fine-tune</h3><p>Adapt a pretrained backbone to the two-class problem with a fresh classification head.</p></li>
+      <li><h3>Validate</h3><p>Watch validation accuracy to catch overfitting before it sets in.</p></li>
+      <li><h3>Probe</h3><p>Inspect the confusion matrix and saliency maps to understand what it really learned.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="kicker">Reflection</p>
+    <h2>What rebuilding it taught me</h2>
+    <ul class="learn">
+      <li><b>The dataset is the model.</b> Far more accuracy comes from clean, balanced, well-augmented data than from a fancier architecture.</li>
+      <li><b>Transfer learning is a superpower.</b> Standing on a pretrained backbone turns a hopeless small-data problem into a tractable afternoon.</li>
+      <li><b>Hard pairs are honest tests.</b> Picking the two most confusable classes means accuracy can't be faked by easy features.</li>
+      <li><b>Look at the failures.</b> The muffins it confidently calls dogs reveal exactly what shortcut the model took.</li>
+      <li><b>Where it looks matters.</b> Saliency maps catch a model that's "right for the wrong reason" — cued by background, not subject.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="credit">
+      <div class="k">About this build</div>
+      <p style="margin:0">An original, from-scratch build by <b>Andrea</b> — written to learn deep image classification hands-on: dataset building, augmentation, transfer learning, and honest evaluation with confusion matrices and saliency maps. Plain HTML/CSS, deployed on GitHub Pages.</p>
+    </div>
+    <p class="fine">Built from scratch by Andrea · one of an ongoing series of learning builds.</p>
+  </div>
+</footer>
+</body>
+</html>
