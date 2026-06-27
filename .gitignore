@@ -5,3 +5,12 @@ Thumbs.db
 node_modules/
 dist/
 build/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Regenerable rendered dataset (recreate with `python -m data.generate`)
+data/dataset/
+data/_smoke/
